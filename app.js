@@ -4,6 +4,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
+const edits = require(__dirname+"/utils/edits.js");
 
 const app = express();
 
@@ -110,7 +111,7 @@ app.route("/articles/:articleTitle")
 }).patch(function(req,res){
   Article.update(
     {titleLower: req.params.articleTitle.toLowerCase()},
-    {$set: editBody(req.body)},
+    {$set: edits.editBody(req.body)},
     function(err, result){
       if(err){
         console.log(err);
@@ -125,27 +126,6 @@ app.route("/articles/:articleTitle")
     }
   );
 });
-
-function editBody(body){
-  let bo = {};
-  if(body.title && body.content){
-    bo ={
-      title: body.title,
-      titleLower: body.title.toLowerCase(),
-      content: body.content
-    };
-  } else if(body.content){
-    bo ={
-      content: body.content
-    };
-  } else if(body.title){
-    bo ={
-      title: body.title,
-      titleLower: body.title.toLowerCase(),
-    };
-  }
-  return bo;
-}
 
 app.listen(3000, function(){
   console.log("Server is running on port 3000");
