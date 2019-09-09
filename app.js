@@ -94,13 +94,30 @@ app.route("/articles/:articleTitle")
     {titleLower: req.params.articleTitle.toLowerCase()},
     {title: req.body.title, titleLower: req.body.title.toLowerCase(), content: req.body.content},
     {overwrite: true},
-    function(err, articles){
+    function(err, result){
       if(err) {
         console.log(err);
         res.send("error!");
       }else {
-        if(articles){
-          res.status(200).send(articles);
+        if(result){
+          res.status(200).send(result);
+        }else {
+          res.send("no article found to update");
+        }
+      }
+    }
+  );
+}).patch(function(req,res){
+  Article.update(
+    {titleLower: req.params.articleTitle.toLowerCase()},
+    {$set: editBody(req.body)},
+    function(err, result){
+      if(err){
+        console.log(err);
+        res.send("error!");
+      } else {
+        if(result){
+          res.status(200).send(result);
         }else {
           res.send("no article found to update");
         }
@@ -108,6 +125,27 @@ app.route("/articles/:articleTitle")
     }
   );
 });
+
+function editBody(body){
+  let bo = {};
+  if(body.title && body.content){
+    bo ={
+      title: body.title,
+      titleLower: body.title.toLowerCase(),
+      content: body.content
+    };
+  } else if(body.content){
+    bo ={
+      content: body.content
+    };
+  } else if(body.title){
+    bo ={
+      title: body.title,
+      titleLower: body.title.toLowerCase(),
+    };
+  }
+  return bo;
+}
 
 app.listen(3000, function(){
   console.log("Server is running on port 3000");
