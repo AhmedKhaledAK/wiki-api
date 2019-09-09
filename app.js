@@ -89,6 +89,24 @@ app.route("/articles/:articleTitle")
       }
     }
   });
+}).put(function(req, res){
+  Article.update(
+    {titleLower: req.params.articleTitle.toLowerCase()},
+    {title: req.body.title, titleLower: req.body.title.toLowerCase(), content: req.body.content},
+    {overwrite: true},
+    function(err, articles){
+      if(err) {
+        console.log(err);
+        res.send("error!");
+      }else {
+        if(articles){
+          res.status(200).send(articles);
+        }else {
+          res.send("no article found to update");
+        }
+      }
+    }
+  );
 });
 
 app.listen(3000, function(){
