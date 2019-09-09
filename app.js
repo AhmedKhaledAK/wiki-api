@@ -3,8 +3,13 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const ejs = require("ejs");
 
 const app = express();
+
+app.set('view engine','ejs');
+
+app.use(express.static("public"));
 
 mongoose.connect("mongodb://localhost:27017/wikidb", {useNewUrlParser: true});
 
