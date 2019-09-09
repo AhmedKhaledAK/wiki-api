@@ -1,0 +1,11 @@
+{
+  "name": "wiki-api",
+  "version": "1.0.0",
+  "description": "An educational project that illustrates how to create a RESTful API from scratch.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ahmed Khaled",
+  "license": "ISC"
+}
