@@ -29,8 +29,12 @@ app.route("/articles")
   Article.find({}, function(err, articles){
     if(err) console.log(err);
     else {
-      res.send(articles);
-      console.log(articles);
+      if (articles) {
+        console.log(articles);
+        res.send(articles);
+      } else {
+        res.send("no articles found");
+      }
     }
   });
 
@@ -68,6 +72,23 @@ app.route("/articles")
     }
   });
 
+});
+
+app.route("/articles/:articleTitle")
+.get(function(req,res){
+  Article.findOne({titleLower: req.params.articleTitle.toLowerCase()}, function(err, article){
+    if(err) {
+      console.log(err);
+      res.send(err);
+    } else {
+      if(article){
+        console.log(article);
+        res.send(article);
+      } else {
+        res.send("no articles found");
+      }
+    }
+  });
 });
 
 app.listen(3000, function(){
