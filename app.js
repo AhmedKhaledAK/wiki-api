@@ -125,6 +125,19 @@ app.route("/articles/:articleTitle")
       }
     }
   );
+}).delete(function(req, res){
+  Article.deleteOne({titleLower: req.params.articleTitle.toLowerCase()}, function(err,result){
+    if(err){
+      console.log(err);
+      res.send("error!");
+    } else {
+      if(result){
+        res.status(200).send(result);
+      }else {
+        res.send("no article found to delete");
+      }
+    }
+  });
 });
 
 app.listen(3000, function(){
